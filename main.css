@@ -1,0 +1,78 @@
+:root {
+	--bg: #fff;
+	--text: #000;
+
+	--stripe0: rgba(0, 0, 0, 0);
+	--stripe1: rgba(0, 0, 0, .3);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: sans-serif;
+	font-size: 16px;
+}
+
+
+body {
+	min-height: 1200px;
+	max-width: 800px;
+	margin: 0;
+	padding: 0;
+}
+
+.main-grid {
+	display: grid;
+	grid-template-columns: minmax(2rem, auto) 1fr minmax(2rem, auto);
+	grid-template-rows: 2rem auto 2rem;
+
+	grid-template-areas: 
+		". .    ."
+		". main ."
+		". .    .";
+}
+
+main {
+	grid-area: main;
+
+	display: grid;
+	gap: 2rem;
+}
+
+
+.striped {
+	background-color: var(--bg);
+	background-image: repeating-linear-gradient(
+		135deg,
+		var(--stripe0),
+		var(--stripe0) 3px,
+		var(--stripe1) 4px,
+		var(--stripe0) 5px,
+		var(--stripe0) 8px
+	);
+	background-repeat: no-repeat;
+}
+
+.placeholder {
+	background-color: white;
+	background-image: 
+         linear-gradient(to top left,
+             var(--stripe0) 0%,
+             var(--stripe0) calc(50% - 1px),
+             var(--stripe1) 50%,
+             var(--stripe0) calc(50% + 1px),
+             var(--stripe0) 100%),
+         linear-gradient(to top right,
+             var(--stripe0) 0%,
+             var(--stripe0) calc(50% - 0.8px),
+             var(--stripe1) 50%,
+             var(--stripe0) calc(50% + 0.8px),
+             var(--stripe0) 100%);
+	border: 1px solid var(--stripe1);
+}
+
+.dummy-600 {
+	height: 600px;
+}
