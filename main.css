@@ -13,26 +13,28 @@
 html {
 	font-family: sans-serif;
 	font-size: 16px;
+	line-height: 1.3;
 }
 
 
 body {
-	min-height: 1200px;
-	max-width: 800px;
 	margin: 0;
 	padding: 0;
+	max-width: 80rem;
 }
 
 .main-grid {
 	display: grid;
-	grid-template-columns: minmax(2rem, auto) 1fr minmax(2rem, auto);
-	grid-template-rows: 2rem auto 2rem;
+	grid-template-columns: 2rem 1fr 2rem;
+	grid-template-rows: minmax(4rem, auto) 2rem auto 2rem;
 
-	grid-template-areas: 
+	grid-template-areas:
+		"menu menu menu"
 		". .    ."
 		". main ."
 		". .    .";
 }
+
 
 main {
 	grid-area: main;
@@ -56,6 +58,9 @@ main {
 }
 
 .placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	background-color: white;
 	background-image: 
          linear-gradient(to top left,
@@ -73,6 +78,108 @@ main {
 	border: 1px solid var(--stripe1);
 }
 
-.dummy-600 {
-	height: 600px;
+.placeholder label {
+	background-color: var(--bg);
+	padding: 1rem;
+	border: 1px solid var(--stripe1);
+}
+
+.container {
+	padding: 1rem;
+	background-color: var(--bg);
+	border: 1px solid var(--stripe1);
+}
+
+.main-header {
+	grid-area: menu;
+	padding: 1rem 2rem;
+	background-color: var(--bg);
+	border-bottom: 1px solid var(--stripe1);
+	position: sticky;
+	top: 0;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.menu-trigger {
+	display: block;
+	background-image: url(assets/menu.svg);
+	width: 2rem;
+	height: 2rem;
+	overflow: hidden;
+	text-indent: 9999rem;
+
+	transition: transform linear 100ms;
+}
+
+
+#menu-toggle {
+	display: none;
+}
+
+#menu-toggle:checked ~ .main-header {
+	row-gap: 1rem;
+}
+
+#menu-toggle:checked ~ .main-header .main-menu {
+	max-height: 100vh;
+
+}
+
+#menu-toggle:checked ~ .main-header .menu-trigger {
+	transform: rotate(90deg);
+}
+
+.main-menu {
+	max-height: 0;
+	overflow: hidden;
+}
+
+.main-menu ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+}
+
+.main-menu ul li {
+}
+
+
+.ar43 {
+	aspect-ratio: 4 / 3;
+}
+
+
+
+
+@media (min-width: 50rem) {
+	.main-grid {
+		grid-template-columns: 12rem 2rem 1fr 2rem;
+		grid-template-rows: 2rem auto 2rem;
+
+		grid-template-areas:
+			"menu . .    ."
+			"menu . main ."
+			"menu . .    .";
+	}
+
+	.menu-trigger {
+		display: none;
+	}
+
+	.main-menu {
+		max-height: initial;
+		overflow: initial;
+	}
+
+	.main-header {
+		padding-top: 2rem;
+		border-right: 1px solid var(--stripe1);
+		border-bottom: none;
+	}
+
 }
