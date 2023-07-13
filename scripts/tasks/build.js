@@ -1,13 +1,13 @@
-import { mkdirSync, cpSync } from "fs";
-import generatePage from "./generate-page.js";
+import { mkdirSync, cpSync } from "fs"
+import generatePage from "./generate-page.js"
 
 const createDirs = () => {
-	mkdirSync("./output", {recursive: true} );
-};
+	mkdirSync("./output", {recursive: true} )
+}
 
 const copyStaticFiles = () => {
-	cpSync("./content/static", "./output/static", {recursive: true});
-};
+	cpSync("./content/static", "./output/static", {recursive: true})
+}
 
 const generatePages = () => {
 	[
@@ -16,13 +16,13 @@ const generatePages = () => {
 		["./content/experiment-b.html", "./templates/main.html", "./output/experiment-b/"],
 		["./content/imprint.html", "./templates/main.html", "./output/imprint/"],
 		["./content/privacy-policy.html", "./templates/main.html", "./output/privacy-policy/"],
-	].map(item => generatePage(item[0], item[1], item[2]));
-};
-
-const build = () => {
-	createDirs();
-	copyStaticFiles();
-	generatePages();
+	].map(item => generatePage(item[0], item[1], item[2]))
 }
 
-export default build;
+const build = () => {
+	createDirs()
+	copyStaticFiles()
+	generatePages()
+}
+
+export default build

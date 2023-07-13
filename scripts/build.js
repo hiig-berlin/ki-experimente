@@ -1,3 +1,3 @@
-import build from "./tasks/build.js";
+import build from "./tasks/build.js"
 
-build();
+build()
