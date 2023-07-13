@@ -21,6 +21,7 @@ body {
 	margin: 0;
 	padding: 0;
 	max-width: 80rem;
+	min-height: 100vh;
 }
 
 .main-grid {
@@ -38,8 +39,8 @@ body {
 
 main {
 	grid-area: main;
-
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	gap: 2rem;
 }
 
@@ -146,6 +147,14 @@ main {
 }
 
 .main-menu ul li {
+}
+
+.main-menu a {
+	text-decoration: none;
+}
+
+.main-menu a:visited {
+	color: inherit;
 }
 
 

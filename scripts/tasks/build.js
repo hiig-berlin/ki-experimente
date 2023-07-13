@@ -10,7 +10,13 @@ const copyStaticFiles = () => {
 };
 
 const generatePages = () => {
-	generatePage("./content/index.html", "./templates/main.html", "./output/");
+	[
+		["./content/index.html", "./templates/main.html", "./output/"],
+		["./content/experiment-a.html", "./templates/main.html", "./output/experiment-a/"],
+		["./content/experiment-b.html", "./templates/main.html", "./output/experiment-b/"],
+		["./content/imprint.html", "./templates/main.html", "./output/imprint/"],
+		["./content/privacy-policy.html", "./templates/main.html", "./output/privacy-policy/"],
+	].map(item => generatePage(item[0], item[1], item[2]));
 };
 
 const build = () => {
