@@ -1,0 +1,18 @@
+{
+	"type": "module",
+	"name": "facial-recognition-webapp",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "node scripts/build.js",
+		"watch": "node scripts/watch.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"debounce": "^1.2.1",
+		"dot": "^1.1.3",
+		"hound": "^1.0.5"
+	}
+}
