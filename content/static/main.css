@@ -98,6 +98,9 @@ main {
 	border-bottom: 1px solid var(--stripe1);
 	position: sticky;
 	top: 0;
+	left: 0;
+	max-height: 100vh;
+
 
 	display: flex;
 	flex-direction: column;
