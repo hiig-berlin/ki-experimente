@@ -197,13 +197,13 @@ main {
 
 }
 
-video, canvas {
-	width: 100%;
-	display: block;
-}
-
 .video-canvas {
 	position: relative;
+}
+
+.video-canvas video, .video-canvas canvas {
+	width: 100%;
+	display: block;
 }
 
 .video-canvas video {
@@ -216,4 +216,9 @@ video, canvas {
 .video-canvas canvas {
 	position: relative;
 	z-index: 10;
+}
+
+.debug-output {
+	width: 200px;
+	min-height: 200px;
 }
