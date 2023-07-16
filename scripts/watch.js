@@ -18,3 +18,5 @@ templateWatcher.on('create', handleChange)
 templateWatcher.on('change', handleChange)
 templateWatcher.on('delete', handleChange)
 
+build()
+
