@@ -7,6 +7,7 @@ const createDirs = () => {
 
 const copyStaticFiles = () => {
 	cpSync("./content/static", "./output/static", {recursive: true})
+	cpSync("./content/assets", "./output/assets", {recursive: true})
 }
 
 const generatePages = () => {
