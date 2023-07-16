@@ -38,7 +38,7 @@ const videoCanvas = (el, frameTimeout, frameHandler) => {
 		let loopTimer
 		const loop = () => {
 			ctx.drawImage(vid, 0, 0)
-			frameHandler(vid, cvs).then(() => {
+			frameHandler(cvs).then(() => {
 				clearTimeout(loopTimer)
 				loopTimer = setTimeout(loop, frameTimeout)
 			})
