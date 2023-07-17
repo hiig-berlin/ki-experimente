@@ -1,6 +1,7 @@
 const MODEL_BASE_URL = '/static/models'
 
-export const loadModels = (withRecognotion = false) => {
+export const loadModels = (options = {}) => {
+	const {withRecognotion} = options
 	const models = [
 		faceapi.loadSsdMobilenetv1Model(MODEL_BASE_URL),
 		faceapi.loadTinyFaceDetectorModel(MODEL_BASE_URL)
@@ -24,7 +25,7 @@ const detectorOptions = new faceapi.SsdMobilenetv1Options()
 
 export const detectFaces = (cvs, options = {}) => {
 	let detector
-	const { withRecognotion, withImageData } = options
+	const { withRecognotion, withImage } = options
 
 	if (withRecognotion) {
 		detector = faceapi.detectAllFaces(cvs, detectorOptions)
@@ -38,7 +39,7 @@ export const detectFaces = (cvs, options = {}) => {
 		const faces = descriptions.map(d => {
 			const box = withRecognotion ? d.detection._box : d._box
 			const score = withRecognotion ? d.detection._score : d._score
-			const imageData = withImageData ? getImageData(cvs, box) : null
+			const imageData = withImage ? getImageData(cvs, box) : null
 			return {
 				bounds: {
 					x: box._x,
@@ -51,6 +52,17 @@ export const detectFaces = (cvs, options = {}) => {
 				descriptor: d.descriptor
 			}
 		})
-		return faces
+		if (withImage) {
+			return Promise.all(faces.map(addBitmapImage))
+		} else {
+			return faces
+		}
+	})
+}
+
+const addBitmapImage = face => {
+	return createImageBitmap(face.imageData).then(bmp => {
+		face.image = bmp
+		return face
 	})
 }

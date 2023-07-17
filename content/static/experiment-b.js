@@ -1,8 +1,6 @@
 import videoCanvas from "./video-canvas.js"
-const MODEL_BASE_URL = '/static/models'
-
-	//const detectorOptions = new faceapi.TinyFaceDetectorOptions()
-	const detectorOptions = new faceapi.SsdMobilenetv1Options()
+import {circleFaceBoundingBox} from "./lib/graphics.js"
+import { loadModels, detectFaces } from "./lib/detection.js"
 
 const printDebug = (data) => {
 	const dbg = document.querySelector(".debug-output")
@@ -11,35 +9,27 @@ const printDebug = (data) => {
 	].join("\n")
 }
 
-const drawDetections = (cvs, detections) => {
+const drawDetections = (cvs, faces) => {
 	const ctx = cvs.getContext("2d")
-	ctx.lineWidth = 4
-	ctx.font = "16px Arial"
-	detections.forEach(face => {
-		const d = face.detection
-		const q = d._score * 2 - 1
-		ctx.strokeStyle = `hsl(${110*q},100%,50%)`
-		ctx.fillStyle = `hsl(${110*q},100%,50%)`
-		const box = d._box
-		if (!box) { return }
-		ctx.strokeRect(box._x, box._y, box._width, box._height)
-		ctx.fillText( `${Math.floor(d._score * 100)}%`, box._x + 6, box._y + 20)
+	faces.forEach(f => {
+	const q = f.score * 2 - 1
+		circleFaceBoundingBox(ctx, f.bounds, q)
+		//ctx.putImageData(f.imageData, 0,0)
 	})
 }
 
-const detectFaces = (cvs) => {
-	return faceapi.detectAllFaces(cvs, detectorOptions)
-		.withFaceLandmarks()
-		.withFaceDescriptors()
-}
-
-const frameHandler = (cvs, matcher) => {
-		return detectFaces(cvs).then(faces => {
-			//faceapi.draw.drawDetections(cvs, faceDescriptions)
+const frameHandler = (cvs, state) => {
+		return detectFaces(cvs, {withImage: true, withRecognotion: true}).then(faces => {
 			drawDetections(cvs, faces)
 			if (faces.length > 0) {
-				const match = matcher.findBestMatch(faces[0].descriptor)
-				printDebug({distance: match._distance})
+				const match = state.matcher.findBestMatch(faces[0].descriptor)
+				const labelIndex = parseInt(match._label,0)
+				if (!isNaN(labelIndex)) {
+					const referenceFace = state.referenceFaces[labelIndex]
+					const ctx = cvs.getContext("2d")
+					ctx.drawImage(referenceFace.image, 0, 0, 100, 100)
+					printDebug({distance: match._distance})
+				}
 			}
 		})
 }
@@ -48,7 +38,7 @@ const loadReferenceImage = () => {
 	const element = document.querySelector("#experiment-b .reference")
 	return new Promise((resolve) => {
 		const img = document.createElement("img")
-		img.setAttribute("src", "/assets/reference-3.jpg")
+		img.setAttribute("src", "/assets/reference-4.jpg")
 		img.addEventListener("load", () => {
 			element.width = img.width
 			element.height = img.height
@@ -60,8 +50,12 @@ const loadReferenceImage = () => {
 }
 
 const detectReferenceFaces = state => {
-	return detectFaces(state.referenceCvs).then(faces => {
+	return detectFaces(state.referenceCvs, {withImage: true, withRecognotion: true}).then(faces => {
 		state.referenceFaces = faces
+		state.referenceDescriptors = faces.map((f,i) => {
+			
+			return new faceapi.LabeledFaceDescriptors(i.toString(), [f.descriptor] )
+		})
 		return state
 	})
 }
@@ -72,8 +66,8 @@ const drawReferenceFaces = state => {
 }
 
 const startVideo = state => {
-	const matcher = new faceapi.FaceMatcher(state.referenceFaces)
-	videoCanvas(document.querySelector("#experiment-b .video-canvas"), 10, (cvs) => frameHandler(cvs, matcher))
+	state.matcher = new faceapi.FaceMatcher(state.referenceDescriptors)
+	videoCanvas(document.querySelector("#experiment-b .video-canvas"), 10, (cvs) => frameHandler(cvs, state))
 }
 
 const inspect = state => {
@@ -82,12 +76,7 @@ const inspect = state => {
 	return state
 }
 
-const models = Promise.all([
-	faceapi.loadSsdMobilenetv1Model(MODEL_BASE_URL),
-	faceapi.loadTinyFaceDetectorModel(MODEL_BASE_URL),
-	faceapi.loadFaceLandmarkModel(MODEL_BASE_URL),
-	faceapi.loadFaceRecognitionModel(MODEL_BASE_URL),
-])
+const models = loadModels({withRecognotion: true})
 
 Promise.all([models, loadReferenceImage()])
 	.then(([_, referenceCvs]) => ({referenceCvs}))

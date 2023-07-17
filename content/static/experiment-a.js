@@ -11,21 +11,17 @@ const printDebug = data => {
 	].join("\n")).join("\n---\n")
 }
 
-	//const detectorOptions = new faceapi.TinyFaceDetectorOptions()
-	const detectorOptions = new faceapi.SsdMobilenetv1Options()
-
-
 const drawDetections = (cvs, faces) => {
 	const ctx = cvs.getContext("2d")
 	faces.forEach(f => {
 	const q = f.score * 2 - 1
 		circleFaceBoundingBox(ctx, f.bounds, q)
-		ctx.putImageData(f.imageData, 0,0)
+		//ctx.drawImage(f.image, 0, 0, 100, 100)
 	})
 }
 
 const frameHandler = (cvs) => {
-		return detectFaces(cvs, {withImageData: true})
+		return detectFaces(cvs, {withImage: true})
 		.then(faces => {
 			drawDetections(cvs, faces)
 			printDebug(faces)
