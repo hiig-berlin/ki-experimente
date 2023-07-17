@@ -4,6 +4,13 @@ const MODEL_BASE_URL = '/static/models'
 	//const detectorOptions = new faceapi.TinyFaceDetectorOptions()
 	const detectorOptions = new faceapi.SsdMobilenetv1Options()
 
+const printDebug = (data) => {
+	const dbg = document.querySelector(".debug-output")
+	dbg.innerHTML = [
+		`Distance: ${data.distance}`
+	].join("\n")
+}
+
 const drawDetections = (cvs, detections) => {
 	const ctx = cvs.getContext("2d")
 	ctx.lineWidth = 4
@@ -32,7 +39,7 @@ const frameHandler = (cvs, matcher) => {
 			drawDetections(cvs, faces)
 			if (faces.length > 0) {
 				const match = matcher.findBestMatch(faces[0].descriptor)
-				console.log(match)
+				printDebug({distance: match._distance})
 			}
 		})
 }
@@ -41,7 +48,7 @@ const loadReferenceImage = () => {
 	const element = document.querySelector("#experiment-b .reference")
 	return new Promise((resolve) => {
 		const img = document.createElement("img")
-		img.setAttribute("src", "/assets/reference-1.jpg")
+		img.setAttribute("src", "/assets/reference-3.jpg")
 		img.addEventListener("load", () => {
 			element.width = img.width
 			element.height = img.height
