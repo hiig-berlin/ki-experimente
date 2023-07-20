@@ -7,15 +7,42 @@ const printDebug = (faces) => {
 	dbg.innerHTML = faces.map(f => `${f.match}`).join("\n---\n")
 }
 
+const drawImageSquare = (ctx, image, x, y, size) => {
+	const a = image.width
+	const b = image.height
+	const s = Math.min(a, b)
+	
+	const da = (a - s) / 2
+	const db = (b - s) / 2
+
+	ctx.drawImage(image, da, db, s, s, x, y, size, size)
+}
+
 const drawDetections = (cvs, faces) => {
 	const ctx = cvs.getContext("2d")
+	ctx.save()
 	faces.forEach(f => {
 	const q = f.score * 2 - 1
 		circleFaceBoundingBox(ctx, f.bounds, q)
 		if (f.match) {
-			ctx.drawImage(f.referenceFace.image, f.bounds.x, f.bounds.y + f.bounds.h + 10, 100, 100)
+			const mx = f.bounds.x
+			const my = f.bounds.y + f.bounds.h + 10
+			const ms = 100
+
+			const r = ms / 2
+			
+			ctx.fillStyle = "#fff"
+			ctx.beginPath()
+			ctx.arc(mx + r, my + r , r + 4, 0, 2 * Math.PI)
+			ctx.fill()
+
+			ctx.beginPath()
+			ctx.arc(mx + ms / 2, my + ms / 2, ms / 2, 0, 2 * Math.PI)
+			ctx.clip()
+			drawImageSquare(ctx, f.referenceFace.image, mx, my, ms)
 		}
 	})
+	ctx.restore()
 }
 
 
@@ -38,7 +65,7 @@ const loadReferenceImage = () => {
 	const element = document.querySelector("#experiment-b .reference")
 	return new Promise((resolve) => {
 		const img = document.createElement("img")
-		img.setAttribute("src", "/assets/reference-5.jpg")
+		img.setAttribute("src", "/assets/reference-2.jpg")
 		img.addEventListener("load", () => {
 			element.width = img.width
 			element.height = img.height
