@@ -1,4 +1,15 @@
+/* begin: globals */
 :root {
+	--color-white: #FFFFFF;
+	--color-black: #000000;
+	--color-beige: #FFE6A6;
+	--color-orange-pale: #FBD1B2;
+	--color-blue-light: #AFC8DB;
+	--color-orange-heavy: #EC6408;
+	--color-blue-heavy: #618AAC;
+	--color-orange-light: #F7AF7E;
+	--color-yellow-faded: #C69F33;
+
 	--bg: #fff;
 	--text: #000;
 
@@ -9,7 +20,10 @@
 * {
 	box-sizing: border-box;
 }
+/* end: globals */
 
+
+/* begin: page basics */
 html {
 	font-family: sans-serif;
 	font-size: 16px;
@@ -22,8 +36,44 @@ body {
 	padding: 0;
 	max-width: 80rem;
 	min-height: 100vh;
+
+	background-color: var(--color-white);
+}
+/* end: page basics */
+
+
+/* begin: basic elements */
+img {
+	display: block;
+	width: 100%;
+}
+/* end: basic elements */
+
+/* begin: content elements */
+.container {
+	padding: 1rem;
+	border: 1px solid var(--stripe1);
+}
+.container > *:first-child {
+	margin-top: 0;
+}
+.container > *:last-child {
+	margin-bottom: 0;
 }
 
+main header {
+	background-color: var(--color-orange-heavy);
+	color: var(--color-white);
+}
+
+main section {
+	background-color: var(--color-white);
+	color: var(--color-black);
+}
+/* end: content elements */
+
+
+/* begin: grid structure */
 .main-grid {
 	display: grid;
 	grid-template-columns: 2rem 1fr 2rem;
@@ -43,54 +93,10 @@ main {
 	flex-direction: column;
 	gap: 2rem;
 }
+/* end: grid structure */
 
 
-.striped {
-	background-color: var(--bg);
-	background-image: repeating-linear-gradient(
-		135deg,
-		var(--stripe0),
-		var(--stripe0) 3px,
-		var(--stripe1) 4px,
-		var(--stripe0) 5px,
-		var(--stripe0) 8px
-	);
-	background-repeat: no-repeat;
-}
-
-.placeholder {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: white;
-	background-image: 
-         linear-gradient(to top left,
-             var(--stripe0) 0%,
-             var(--stripe0) calc(50% - 1px),
-             var(--stripe1) 50%,
-             var(--stripe0) calc(50% + 1px),
-             var(--stripe0) 100%),
-         linear-gradient(to top right,
-             var(--stripe0) 0%,
-             var(--stripe0) calc(50% - 0.8px),
-             var(--stripe1) 50%,
-             var(--stripe0) calc(50% + 0.8px),
-             var(--stripe0) 100%);
-	border: 1px solid var(--stripe1);
-}
-
-.placeholder label {
-	background-color: var(--bg);
-	padding: 1rem;
-	border: 1px solid var(--stripe1);
-}
-
-.container {
-	padding: 1rem;
-	background-color: var(--bg);
-	border: 1px solid var(--stripe1);
-}
-
+/* begin: header and menu */
 .main-header {
 	grid-area: menu;
 	padding: 1rem 2rem;
@@ -101,9 +107,11 @@ main {
 	left: 0;
 	max-height: 100vh;
 
-
 	display: flex;
 	flex-direction: column;
+
+	background-color: var(--color-blue-light);
+	color: var(--color-blue-heavy);
 }
 
 .menu-trigger {
@@ -152,21 +160,51 @@ main {
 .main-menu ul li {
 }
 
-.main-menu a {
-	text-decoration: none;
-	color: var(--text);
-}
-
+.main-menu a,
 .main-menu a:visited {
-	color: inherit;
+	text-decoration: none;
+	color: var(--color-black);
 }
-
+/* begin: header and menu */
 
 .ar43 {
 	aspect-ratio: 4 / 3;
 }
 
+.experiment {
+	position: relative;
+}
 
+.experiment video,
+.experiment .live-canvas {
+	width: 100%;
+	display: block;
+}
+
+.experiment video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+}
+
+.experiment .live-canvas {
+	position: relative;
+	z-index: 10;
+}
+
+.experiment .reference {
+	display: none;
+}
+
+.debug-output {
+	width: 200px;
+	min-height: 200px;
+}
+
+canvas.reference {
+	width: 100%;
+}
 
 
 @media (min-width: 50rem) {
@@ -197,32 +235,45 @@ main {
 
 }
 
-.video-canvas {
-	position: relative;
+
+/* begin: dev stuff */
+.striped {
+	background-color: var(--bg);
+	background-image: repeating-linear-gradient(
+		135deg,
+		var(--stripe0),
+		var(--stripe0) 3px,
+		var(--stripe1) 4px,
+		var(--stripe0) 5px,
+		var(--stripe0) 8px
+	);
+	background-repeat: no-repeat;
 }
 
-.video-canvas video, .video-canvas canvas {
-	width: 100%;
-	display: block;
+.placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: white;
+	background-image: 
+         linear-gradient(to top left,
+             var(--stripe0) 0%,
+             var(--stripe0) calc(50% - 1px),
+             var(--stripe1) 50%,
+             var(--stripe0) calc(50% + 1px),
+             var(--stripe0) 100%),
+         linear-gradient(to top right,
+             var(--stripe0) 0%,
+             var(--stripe0) calc(50% - 0.8px),
+             var(--stripe1) 50%,
+             var(--stripe0) calc(50% + 0.8px),
+             var(--stripe0) 100%);
+	border: 1px solid var(--stripe1);
 }
 
-.video-canvas video {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 0;
+.placeholder label {
+	background-color: var(--bg);
+	padding: 1rem;
+	border: 1px solid var(--stripe1);
 }
-
-.video-canvas canvas {
-	position: relative;
-	z-index: 10;
-}
-
-.debug-output {
-	width: 200px;
-	min-height: 200px;
-}
-
-canvas.reference {
-	width: 100%;
-}
+/* end: dev stuff */

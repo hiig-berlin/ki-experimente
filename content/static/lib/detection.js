@@ -1,13 +1,13 @@
 const MODEL_BASE_URL = '/static/models'
 
 export const loadModels = (options = {}) => {
-	const {withRecognotion} = options
+	const {withRecognition} = options
 	const models = [
 		faceapi.loadSsdMobilenetv1Model(MODEL_BASE_URL),
 		faceapi.loadTinyFaceDetectorModel(MODEL_BASE_URL)
 	]
 
-	if (withRecognotion) {
+	if (withRecognition) {
 		models.push(faceapi.loadFaceLandmarkModel(MODEL_BASE_URL))
 		models.push(faceapi.loadFaceRecognitionModel(MODEL_BASE_URL))
 	}
@@ -25,9 +25,9 @@ const detectorOptions = new faceapi.SsdMobilenetv1Options()
 
 export const detectFaces = (cvs, options = {}) => {
 	let detector
-	const { withRecognotion, withImage } = options
+	const { withRecognition, withImage } = options
 
-	if (withRecognotion) {
+	if (withRecognition) {
 		detector = faceapi.detectAllFaces(cvs, detectorOptions)
 			.withFaceLandmarks()
 			.withFaceDescriptors()
@@ -37,8 +37,8 @@ export const detectFaces = (cvs, options = {}) => {
 
 	return detector.then(descriptions => {
 		const faces = descriptions.map(d => {
-			const box = withRecognotion ? d.detection._box : d._box
-			const score = withRecognotion ? d.detection._score : d._score
+			const box = withRecognition ? d.detection._box : d._box
+			const score = withRecognition ? d.detection._score : d._score
 			const imageData = withImage ? getImageData(cvs, box) : null
 			return {
 				bounds: {

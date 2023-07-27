@@ -1,113 +1,166 @@
-import videoCanvas from "./video-canvas.js"
-import {circleFaceBoundingBox} from "./lib/graphics.js"
+import video from "./lib/video.js"
+import {circleFaceBoundingBox, drawFaceThumbnail} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
 
-const printDebug = (faces) => {
-	const dbg = document.querySelector(".debug-output")
-	dbg.innerHTML = faces.map(f => `${f.match}`).join("\n---\n")
-}
+class ExperimentB {
+	constructor(element) {
+		this.container = element
+		this.paused = true
+		this.loopDelay = 40
+		this.loadModels()
+		.then(() => this.buildElements())
+		.then(() => this.start())
+		.then(() => this.canvas.addEventListener("click", () => this.click()))
+	}
 
-const drawImageSquare = (ctx, image, x, y, size) => {
-	const a = image.width
-	const b = image.height
-	const s = Math.min(a, b)
-	
-	const da = (a - s) / 2
-	const db = (b - s) / 2
-
-	ctx.drawImage(image, da, db, s, s, x, y, size, size)
-}
-
-const drawDetections = (cvs, faces) => {
-	const ctx = cvs.getContext("2d")
-	ctx.save()
-	faces.forEach(f => {
-	const q = f.score * 2 - 1
-		circleFaceBoundingBox(ctx, f.bounds, q)
-		if (f.match) {
-			const mx = f.bounds.x
-			const my = f.bounds.y + f.bounds.h + 10
-			const ms = 100
-
-			const r = ms / 2
-			
-			ctx.fillStyle = "#fff"
-			ctx.beginPath()
-			ctx.arc(mx + r, my + r , r + 4, 0, 2 * Math.PI)
-			ctx.fill()
-
-			ctx.beginPath()
-			ctx.arc(mx + ms / 2, my + ms / 2, ms / 2, 0, 2 * Math.PI)
-			ctx.clip()
-			drawImageSquare(ctx, f.referenceFace.image, mx, my, ms)
+	click() {
+		if (!this.refFaces) {
+			this.loadDefaultReference()
+			.then(() => this.detectReferenceFaces())
+			return
 		}
-	})
-	ctx.restore()
-}
+		if (!this.matcher){
+			this.saveReferenceFaces()
+			this.start()
+			return
+		}
+	}
 
+	loadModels() {
+		return loadModels({withRecognition: true})
+	}
 
-const frameHandler = (cvs, state) => {
-		return detectFaces(cvs, {withImage: true, withRecognotion: true}).then(faces => {
-			faces.map(f => {
-				const match = state.matcher.findBestMatch(f.descriptor)
-				const labelIndex = parseInt(match._label,0)
-				if (!isNaN(labelIndex)) {
-					f.match = match
-					f.referenceFace = state.referenceFaces[labelIndex]
-				}
+	buildElements() {
+		this.container.classList.add("experiment")
+		const refImg = document.createElement("img")
+		refImg.classList.add("reference")
+
+		this.container.appendChild(refImg)
+		this.refImg = refImg
+
+		return video()
+		.then(v => {
+			const canvas = document.createElement("canvas")
+			canvas.width = 1920
+			canvas.height = 1080
+			canvas.classList.add("live-canvas")
+			v.addEventListener("play", () => {
+				const vAspect = v.videoWidth / v.videoHeight
+				canvas.width = Math.max(v.videoWidth, 1200)
+				canvas.height = Math.floor(canvas.width / vAspect)
 			})
-			drawDetections(cvs, faces)
-			printDebug(faces)
+			this.container.appendChild(v)
+			this.container.appendChild(canvas)
+			this.canvas = canvas
+			this.ctx = canvas.getContext("2d")
+			this.video = v
 		})
-}
+	}
 
-const loadReferenceImage = () => {
-	const element = document.querySelector("#experiment-b .reference")
-	return new Promise((resolve) => {
-		const img = document.createElement("img")
-		img.setAttribute("src", "/assets/reference-2.jpg")
-		img.addEventListener("load", () => {
-			element.width = img.width
-			element.height = img.height
-			const ctx = element.getContext("2d")
-			ctx.drawImage(img, 0, 0)
-			resolve(element)
+	frameHandler() {
+		this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
+
+		return detectFaces(this.canvas, {withRecognition: true})
+		.then(faces => {
+			if (this.matcher) {
+				faces.forEach(f => {
+					const match = this.matcher.findBestMatch(f.descriptor)
+					const labelIndex = parseInt(match._label,0)
+					if (!isNaN(labelIndex)) {
+						f.match = match
+						f.referenceFace = this.refFaces[labelIndex]
+					}
+				})
+			}
+			this.drawDetections(faces)
 		})
-	})
-}
+	}
 
-const detectReferenceFaces = state => {
-	return detectFaces(state.referenceCvs, {withImage: true, withRecognotion: true}).then(faces => {
-		state.referenceFaces = faces
-		state.referenceDescriptors = faces.map((f,i) => {
+	drawDetections(faces) {
+		faces.forEach(f => {
+			const q = f.score * 2 - 1
+			circleFaceBoundingBox(this.ctx, f.bounds, q)
+			if (f.match) {
+				const mx = f.bounds.x
+				const my = f.bounds.y + f.bounds.h + 10
+				drawFaceThumbnail(this.ctx, f, mx, my, 25)
+			}
+		})
+	}
+
+	start() {
+		this.paused = false
+		this.loop()
+	}
+
+	stop() {
+		this.paused = true
+		clearTimeout(this.loopTimer)
+	}
+
+	loop() {
+		clearTimeout(this.loopTimer)
+		if(this.paused) { return }
+		this.frameHandler().then(() => {
+			this.loopTimer = setTimeout(() => this.loop(), this.loopDelay)
+		})
+	}
+
+	loadDefaultReference() {
+		return new Promise(resolve => {
+			this.stop()
+			const onload = () => {
+				this.refImg.removeEventListener("load", onload)
+				this.drawReferenceImage()
+				resolve()
+			}
+			this.refImg.addEventListener("load", onload)
+			this.refImg.setAttribute("src", "/assets/reference-6.jpg")
+		})
+	}
+
+	saveReferenceFaces() {
+		const referenceDescriptors = this.refFaces.map((f,i) => {
+			console.log(i, f)
 			return new faceapi.LabeledFaceDescriptors(i.toString(), [f.descriptor] )
 		})
-		return state
-	})
+		this.matcher = new faceapi.FaceMatcher(referenceDescriptors)
+	}
+
+	drawReferenceImage() {
+		const refAspect = this.refImg.width / this.refImg.height
+		const canvasAspect = this.canvas.width / this.canvas.height
+
+		let x
+		let y
+		let w
+		let h
+
+		if (refAspect > canvasAspect) {
+			w = this.canvas.width
+			h = w / refAspect
+			x = 0
+			y = (this.canvas.height - h) / 2
+		} else {
+			h = this.canvas.height
+			w = h * refAspect
+			y = 0
+			x = (this.canvas.width - w) / 2
+		}
+
+		this.ctx.fillStyle = "#000"
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+		this.ctx.drawImage(this.refImg, x, y, w, h)
+	}
+
+	detectReferenceFaces() {
+		return detectFaces(this.canvas, {withImage: true, withRecognition: true})
+		.then(faces => {
+			this.refFaces = faces
+			this.drawDetections(this.refFaces)
+			return faces
+		})
+	}
 }
 
-const drawReferenceFaces = state => {
-	drawDetections(state.referenceCvs, state.referenceFaces)
-	return state
-}
-
-const startVideo = state => {
-	state.matcher = new faceapi.FaceMatcher(state.referenceDescriptors)
-	videoCanvas(document.querySelector("#experiment-b .video-canvas"), 10, (cvs) => frameHandler(cvs, state))
-}
-
-const inspect = state => {
-	console.log(state)
-
-	return state
-}
-
-const models = loadModels({withRecognotion: true})
-
-Promise.all([models, loadReferenceImage()])
-	.then(([_, referenceCvs]) => ({referenceCvs}))
-	.then(detectReferenceFaces)
-	.then(drawReferenceFaces)
-	.then(inspect)
-	.then(startVideo)
-
+window.exp = new ExperimentB(document.querySelector("#experiment-b"))
