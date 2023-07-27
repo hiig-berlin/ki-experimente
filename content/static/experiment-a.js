@@ -1,4 +1,3 @@
-import videoCanvas from "./lib/video-canvas.js"
 import video from "./lib/video.js"
 import {circleFaceBoundingBox} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
@@ -18,6 +17,8 @@ class ExperimentA {
 	}
 
 	buildElements() {
+		this.container.setAttribute("style", `height:${this.container.clientHeight}px`)
+		this.container.innerHTML = ""
 		this.container.classList.add("experiment")
 		return video()
 		.then(v => {
@@ -30,6 +31,7 @@ class ExperimentA {
 				canvas.width = Math.max(v.videoWidth, 1200)
 				canvas.height = Math.floor(canvas.width / vAspect)
 			})
+			this.container.removeAttribute("style")
 			this.container.appendChild(v)
 			this.container.appendChild(canvas)
 			this.canvas = canvas
@@ -73,5 +75,6 @@ class ExperimentA {
 	}
 }
 
-new ExperimentA(document.querySelector("#experiment-a"))
-
+document.querySelector("#experiment-a .launcher button").addEventListener("click", () => {
+	new ExperimentA(document.querySelector("#experiment-a"))
+})

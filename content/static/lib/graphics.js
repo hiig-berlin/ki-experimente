@@ -27,13 +27,6 @@ export const circleFaceBoundingBox = (ctx, bounds, q) => {
 	ctx.strokeStyle = `hsl(${110*q},90%,40%)`
 	ctx.fillStyle = ctx.strokeStyle
 
-	/*
-	ctx.lineWidth = 1 * scaleFactor
-	ctx.beginPath()
-	ctx.arc(xc, yc, r, 0, 2 * pi)
-	ctx.stroke()
-	*/
-
 	ctx.lineWidth = gaugeThickness - 2
 	ctx.beginPath()
 	ctx.arc(xc, yc, r - gaugeThickness/2, pi / 2, pi / 2 + 2 * pi * q)
@@ -66,7 +59,7 @@ export const drawFaceThumbnail = (ctx, face, xc, yc, r) => {
 	ctx.restore()
 }
 
-const getScaleFactor = (ctx) => {
+export const getScaleFactor = (ctx) => {
 	return ctx.canvas.width / ctx.canvas.clientWidth
 }
 

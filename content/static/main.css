@@ -171,6 +171,7 @@ main {
 	aspect-ratio: 4 / 3;
 }
 
+/* begin: experiment */
 .experiment {
 	position: relative;
 }
@@ -204,7 +205,51 @@ main {
 	left: 0;
 	right: 0;
 	bottom: 0;
+
+	display: flex;
+	justify-content: flex-start;
+	align-content: flex-start;
+	flex-direction: row-reverse;
+	gap: 1rem;
+	flex-wrap: wrap-reverse;
+
+	padding: 1rem;
 }
+
+.experiment .overlay .image-upload {
+	display: none;
+}
+
+.experiment .overlay button,
+.experiment .overlay label {
+	display: block;
+	background-color: var(--color-orange-heavy);
+	border: 1px solid var(--color-orange-light);
+	color: var(--color-white);
+	padding: 0.5rem;
+	font-size: 1rem;
+	line-height: 1rem;
+	border-radius: 1rem;
+}
+/* end: experiment */
+
+/* begin: launcher */
+.launcher {
+	aspect-ratio: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--color-blue-heavy);
+}
+
+.launcher button {
+	font-size: 2rem;
+	padding: 1rem;
+	background-color: var(--color-orange-heavy);
+	border: 1px solid var(--color-orange-light);
+	color: var(--color-white);
+}
+/* end: launcher */
 
 .debug-output {
 	width: 200px;

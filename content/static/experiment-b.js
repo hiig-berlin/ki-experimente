@@ -1,5 +1,5 @@
 import video from "./lib/video.js"
-import {circleFaceBoundingBox, drawFaceThumbnail} from "./lib/graphics.js"
+import {circleFaceBoundingBox, drawFaceThumbnail, getScaleFactor} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
 
 class ExperimentB {
@@ -43,6 +43,8 @@ class ExperimentB {
 	}
 
 	buildElements() {
+		this.container.setAttribute("style", `height:${this.container.clientHeight}px`)
+		this.container.innerHTML = ""
 		this.container.classList.add("experiment")
 		const refImg = document.createElement("img")
 		refImg.classList.add("reference")
@@ -61,12 +63,28 @@ class ExperimentB {
 				canvas.width = Math.max(v.videoWidth, 1200)
 				canvas.height = Math.floor(canvas.width / vAspect)
 			})
+			this.container.removeAttribute("style")
 			this.container.appendChild(v)
 			this.container.appendChild(canvas)
 			this.canvas = canvas
 			this.ctx = canvas.getContext("2d")
 			this.video = v
+			this.buildControls()
 		})
+	}
+
+	buildControls() {
+		const overlay = document.createElement("div")
+		overlay.classList.add("overlay")
+		overlay.innerHTML = [
+			`<button class="confirm-reference">Confirm</button>`,
+			`<button class="capture-reference">Capture</button>`,
+			`<button class="default-reference">Default</button>`,
+			`<label for="image-upload">Upload</label>`,
+			`<input type="file" class="image-upload" id="image-upload" />`,
+		].join("")
+
+		this.container.appendChild(overlay)
 	}
 
 	drawVideoFrame() {
@@ -97,8 +115,10 @@ class ExperimentB {
 			const q = f.score * 2 - 1
 			circleFaceBoundingBox(this.ctx, f.bounds, q)
 			if (f.match) {
-				const mx = f.bounds.x
-				const my = f.bounds.y + f.bounds.h + 10
+				const scaleFactor = getScaleFactor(this.ctx)
+				const offset = 10 * scaleFactor
+				const mx = f.bounds.x - offset
+				const my = f.bounds.y + f.bounds.h + offset
 				drawFaceThumbnail(this.ctx, f, mx, my, 25)
 			}
 		})
@@ -191,4 +211,6 @@ class ExperimentB {
 	}
 }
 
-window.exp = new ExperimentB(document.querySelector("#experiment-b"))
+document.querySelector("#experiment-b .launcher button").addEventListener("click", () => {
+	new ExperimentB(document.querySelector("#experiment-b"))
+})
