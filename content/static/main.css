@@ -197,6 +197,15 @@ main {
 	display: none;
 }
 
+.experiment .overlay {
+	position: absolute;
+	z-index: 20;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
 .debug-output {
 	width: 200px;
 	min-height: 200px;

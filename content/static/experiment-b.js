@@ -10,20 +10,32 @@ class ExperimentB {
 		this.loadModels()
 		.then(() => this.buildElements())
 		.then(() => this.start())
-		.then(() => this.canvas.addEventListener("click", () => this.click()))
+		.then(() => this.bindEvents())
 	}
 
-	click() {
-		if (!this.refFaces) {
-			this.loadDefaultReference()
+	bindEvents() {
+		this.container.querySelector(".default-reference").addEventListener("click", () => {
+			this.loadReference("/assets/reference-6.jpg")
 			.then(() => this.detectReferenceFaces())
-			return
-		}
-		if (!this.matcher){
+		})
+
+		this.container.querySelector(".capture-reference").addEventListener("click", () => {
+			this.captureReference()
+			.then(() => this.detectReferenceFaces())
+		})
+		
+		this.container.querySelector(".image-upload").addEventListener("change", (ev) => {
+			ev.preventDefault()
+			const file = ev.target.files[0]
+			const url = URL.createObjectURL(file)
+			this.loadReference(url)
+			.then(() => this.detectReferenceFaces())
+		})
+
+		this.container.querySelector(".confirm-reference").addEventListener("click", () => {
 			this.saveReferenceFaces()
 			this.start()
-			return
-		}
+		})
 	}
 
 	loadModels() {
@@ -57,8 +69,12 @@ class ExperimentB {
 		})
 	}
 
-	frameHandler() {
+	drawVideoFrame() {
 		this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
+	}
+
+	frameHandler() {
+		this.drawVideoFrame()
 
 		return detectFaces(this.canvas, {withRecognition: true})
 		.then(faces => {
@@ -106,7 +122,7 @@ class ExperimentB {
 		})
 	}
 
-	loadDefaultReference() {
+	loadReference(src) {
 		return new Promise(resolve => {
 			this.stop()
 			const onload = () => {
@@ -115,8 +131,15 @@ class ExperimentB {
 				resolve()
 			}
 			this.refImg.addEventListener("load", onload)
-			this.refImg.setAttribute("src", "/assets/reference-6.jpg")
+			this.refImg.setAttribute("src", src)
 		})
+	}
+
+	captureReference() {
+		this.stop()
+		this.drawVideoFrame()
+
+		return Promise.resolve()
 	}
 
 	saveReferenceFaces() {
