@@ -143,10 +143,15 @@ class ExperimentB {
 	}
 
 	saveReferenceFaces() {
+		if (this.refFaces.length === 0) {
+			this.matcher = null
+			return
+		}
+
 		const referenceDescriptors = this.refFaces.map((f,i) => {
-			console.log(i, f)
 			return new faceapi.LabeledFaceDescriptors(i.toString(), [f.descriptor] )
 		})
+
 		this.matcher = new faceapi.FaceMatcher(referenceDescriptors)
 	}
 
