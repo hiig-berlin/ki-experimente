@@ -34,7 +34,7 @@ html {
 body {
 	margin: 0;
 	padding: 0;
-	max-width: 80rem;
+	max-width: 60rem;
 	min-height: 100vh;
 
 	background-color: var(--color-white);
@@ -52,7 +52,6 @@ img {
 /* begin: content elements */
 .container {
 	padding: 1rem;
-	border: 1px solid var(--stripe1);
 }
 .container > *:first-child {
 	margin-top: 0;
@@ -76,14 +75,13 @@ main section {
 /* begin: grid structure */
 .main-grid {
 	display: grid;
-	grid-template-columns: 2rem 1fr 2rem;
-	grid-template-rows: minmax(4rem, auto) 2rem 1fr 2rem;
+	grid-template-columns: 1fr;
+	grid-template-rows: minmax(4rem, auto) 1fr 2rem;
 
 	grid-template-areas:
-		"menu menu menu"
-		". .    ."
-		". main ."
-		". .    .";
+		"menu"
+		"main"
+		".   ";
 }
 
 
@@ -91,7 +89,7 @@ main {
 	grid-area: main;
 	display: flex;
 	flex-direction: column;
-	gap: 2rem;
+	/*gap: 2rem;*/
 }
 /* end: grid structure */
 
@@ -101,7 +99,6 @@ main {
 	grid-area: menu;
 	padding: 1rem 2rem;
 	background-color: var(--bg);
-	border-bottom: 1px solid var(--stripe1);
 	position: sticky;
 	top: 0;
 	left: 0;
@@ -165,11 +162,8 @@ main {
 	text-decoration: none;
 	color: var(--color-black);
 }
-/* begin: header and menu */
+/* end: header and menu */
 
-.ar43 {
-	aspect-ratio: 4 / 3;
-}
 
 /* begin: experiment */
 .experiment {
@@ -235,11 +229,13 @@ main {
 
 /* begin: launcher */
 .launcher {
-	aspect-ratio: 1;
+	aspect-ratio: calc(1/1);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: var(--color-blue-heavy);
+	background-size: cover;
+	background-position: center center;
 }
 
 .launcher button {
@@ -248,6 +244,13 @@ main {
 	background-color: var(--color-orange-heavy);
 	border: 1px solid var(--color-orange-light);
 	color: var(--color-white);
+}
+
+#experiment-a .launcher {
+	background-image: url(/assets/bg-image-1.jpg);
+}
+#experiment-b .launcher {
+	background-image: url(/assets/bg-image-2.jpg);
 }
 /* end: launcher */
 
@@ -260,16 +263,26 @@ canvas.reference {
 	width: 100%;
 }
 
+.video-embed iframe {
+	aspect-ratio: calc(4/3);
+	width: 100%;
+}
+
+.teaser img {
+	aspect-ratio: calc(3/2);
+	object-fit: cover;
+	object-position: center center;
+}
+
 
 @media (min-width: 50rem) {
 	.main-grid {
-		grid-template-columns: 12rem 2rem 1fr 2rem;
-		grid-template-rows: 2rem auto 2rem;
+		grid-template-columns: 12rem 1fr;
+		grid-template-rows :auto 2rem;
 
 		grid-template-areas:
-			"menu . .    ."
-			"menu . main ."
-			"menu . .    .";
+			"menu main"
+			"menu .   ";
 	}
 
 	.menu-trigger {
@@ -283,8 +296,12 @@ canvas.reference {
 
 	.main-header {
 		padding-top: 2rem;
-		border-right: 1px solid var(--stripe1);
 		border-bottom: none;
+		background-color: var(--color-white);
+		background-image: url(/assets/menu-bg.png);
+		background-size: cover;
+		background-position: bottom left;
+		background-repeat: no-repeat;
 	}
 
 }
@@ -329,5 +346,9 @@ canvas.reference {
 	background-color: var(--bg);
 	padding: 1rem;
 	border: 1px solid var(--stripe1);
+}
+
+.ar43 {
+	aspect-ratio: 4 / 3;
 }
 /* end: dev stuff */
