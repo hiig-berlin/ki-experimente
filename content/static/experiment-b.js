@@ -1,23 +1,16 @@
 import video from "./lib/video.js"
+import Experiment from "./lib/experiment.js"
 import {circleFaceBoundingBox, drawFaceThumbnail, getScaleFactor} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
 
-class ExperimentB {
-	constructor(element) {
-		this.container = element
-		this.paused = true
-		this.loopDelay = 40
-		this.loadModels()
-		.then(() => this.buildElements())
-		.then(() => this.start())
-		.then(() => this.bindEvents())
-	}
-
+class ExperimentB extends Experiment {
 	bindEvents() {
+		/*
 		this.container.querySelector(".default-reference").addEventListener("click", () => {
 			this.loadReference("/assets/reference-6.jpg")
 			.then(() => this.detectReferenceFaces())
 		})
+		*/
 
 		this.container.querySelector(".capture-reference").addEventListener("click", () => {
 			this.captureReference()
@@ -79,16 +72,12 @@ class ExperimentB {
 		overlay.innerHTML = [
 			`<button class="confirm-reference">Confirm</button>`,
 			`<button class="capture-reference">Capture</button>`,
-			`<button class="default-reference">Default</button>`,
+			//`<button class="default-reference">Default</button>`,
 			`<label for="image-upload">Upload</label>`,
 			`<input type="file" class="image-upload" id="image-upload" />`,
 		].join("")
 
 		this.container.appendChild(overlay)
-	}
-
-	drawVideoFrame() {
-		this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
 	}
 
 	frameHandler() {
@@ -124,23 +113,6 @@ class ExperimentB {
 		})
 	}
 
-	start() {
-		this.paused = false
-		this.loop()
-	}
-
-	stop() {
-		this.paused = true
-		clearTimeout(this.loopTimer)
-	}
-
-	loop() {
-		clearTimeout(this.loopTimer)
-		if(this.paused) { return }
-		this.frameHandler().then(() => {
-			this.loopTimer = setTimeout(() => this.loop(), this.loopDelay)
-		})
-	}
 
 	loadReference(src) {
 		return new Promise(resolve => {

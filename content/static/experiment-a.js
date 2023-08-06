@@ -1,17 +1,9 @@
 import video from "./lib/video.js"
+import Experiment from "./lib/experiment.js"
 import {circleFaceBoundingBox} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
 
-class ExperimentA {
-	constructor(element) {
-		this.container = element
-		this.paused = true
-		this.loopDelay = 40
-		this.loadModels()
-		.then(() => this.buildElements())
-		.then(() => this.start())
-	}
-
+class ExperimentA extends Experiment {
 	loadModels() {
 		return loadModels({withRecognition: false})
 	}
