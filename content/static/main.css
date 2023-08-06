@@ -10,9 +10,6 @@
 	--color-orange-light: #F7AF7E;
 	--color-yellow-faded: #C69F33;
 
-	--bg: #fff;
-	--text: #000;
-
 	--stripe0: rgba(0, 0, 0, 0);
 	--stripe1: rgba(0, 0, 0, .3);
 }
@@ -98,7 +95,7 @@ main {
 .main-header {
 	grid-area: menu;
 	padding: 1rem 2rem;
-	background-color: var(--bg);
+	background-color: var(--color-white);
 	position: sticky;
 	top: 0;
 	left: 0;
@@ -106,9 +103,7 @@ main {
 
 	display: flex;
 	flex-direction: column;
-
-	background-color: var(--color-blue-light);
-	color: var(--color-blue-heavy);
+	color: var(--color-black);
 }
 
 .menu-trigger {
@@ -224,6 +219,7 @@ main {
 	font-size: 1rem;
 	line-height: 1rem;
 	border-radius: 1rem;
+	cursor: pointer;
 }
 /* end: experiment */
 
@@ -244,6 +240,7 @@ main {
 	background-color: var(--color-orange-heavy);
 	border: 1px solid var(--color-orange-light);
 	color: var(--color-white);
+	cursor: pointer;
 }
 
 #experiment-a .launcher {
@@ -309,7 +306,7 @@ canvas.reference {
 
 /* begin: dev stuff */
 .striped {
-	background-color: var(--bg);
+	background-color: var(--color-white);
 	background-image: repeating-linear-gradient(
 		135deg,
 		var(--stripe0),
@@ -343,7 +340,7 @@ canvas.reference {
 }
 
 .placeholder label {
-	background-color: var(--bg);
+	background-color: var(--color-white);
 	padding: 1rem;
 	border: 1px solid var(--stripe1);
 }
