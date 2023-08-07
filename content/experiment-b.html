@@ -1,56 +1,58 @@
-<header class="container">
-	<h1>Identifikation</h1>
+<header class="off-screen">
+	<h1>Gesichter wieder erkennen?</h1>
 </header>
-<div class="">
+<section>
 	<div id="experiment-b">
 		<div class="launcher">
+			<div>Gesichter</div>
+			<div>wieder</div>
+			<div>erkennen?</div>
 			<button>Start</button>
 		</div>
 	</div>
-</div>
+</section>
 
 <section class="container">
-	<p>Lade ein Bild als Referenz hoch oder mach ein Foto mit der Kamera. Die KI wird dann versuchen Gesichter aus dem Referenzbild wiederzu erkennen.</p>
-	<p>Wird sie dich finden, oder vielleicht verwechseln?</p>
+	<p>Lade ein Bild als Referenz hoch oder mach ein Foto mit der Kamera. Das Erkennungssystem wird dann versuchen Gesichter aus dem Referenzbild wiederzu erkennen.</p>
+	<p>Wird es dich finden, oder vielleicht verwechseln?</p>
 	<p>Probier es aus.</p>
 </section>
 
 <section class="container hint">
-	<h2 class="heading">Verdeckung</h2>
+	<h2 class="heading">Jünger und älter</h2>
 	<div class="placeholder ar11 image">
 		<label>Foto</label>
 	</div>
 
 	<div class="inner">
-		<p>Versuche z.B. Teile deines Gesichts zu verdecken.</p>
-		<p>Besonders die Augen sind wichtig um Gesichter im Bild finden zu können.</p>
+		<p>Probier mal ein Foto hochzuladen auf dem zu deutlich jünger warst.</p>
+		<p>Vielleicht wirst du gar nicht mehr als die gleiche Person erkannt.</p>
 	</div>
 </section>
 
 <section class="container hint">
-	<h2 class="heading">Perspektive</h2>
+	<h2 class="heading">Viele ähnliche Gesichter</h2>
 	<div class="placeholder ar11 image">
 		<label>Foto</label>
 	</div>
 
 	<div class="inner">
-		<p>Die KI ist darauf trainiert Gesichter von vorne zu erkennnen.</p>
-		<p>Versuch' mal den Kopf zur Seite zu drehen oder zu neigen.</p>
+		<p>Wenn viele ähnliche Gesichter im Bild sind kommt es leichter zu Verwechslungen.</p>
+		<p>Verwende ein Bild als Referenz auf dem sich viele ähnlich sehen.</p>
 	</div>
 </section>
 
 <section class="container hint">
-	<h2 class="heading">Umgebung</h2>
+	<h2 class="heading">Mehrmals das Gleiche</h2>
 	<div class="placeholder ar11 image">
 		<label>Foto</label>
 	</div>
 
 	<div class="inner">
-		<p>Die Umgebung zu ändern kann der KI auch die Arbeit schwerer machen, zum Beispiel wenn es nicht hell genug ist, oder zu hell.</p>
-		<p>Mach das Licht aus, oder halte die Kamera so dass die Sonne im Bild ist und blendet.</p>
+		<p>Wenn mehrmals das gleiche Gesicht vorhanden ist, wird es uneindeutig.</p>
+		<p>Verwende mehrere Bilder von dir als Referenz gleichzeitig und finde heraus welches eher wiedererkannt wird und wie du das beeinflussen kannst.</p>
 	</div>
 </section>
 
 <script src="/static/face-api.js"></script>
 <script src="/static/experiment-b.js" type="module"></script>
-

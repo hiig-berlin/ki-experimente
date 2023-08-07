@@ -104,6 +104,8 @@ main {
 	display: flex;
 	flex-direction: column;
 	color: var(--color-black);
+
+	z-index: 100;
 }
 
 .menu-trigger {
@@ -306,11 +308,12 @@ main {
 	background-image: url(/assets/bg-image-2.jpg);
 }
 
-.launcher div {
+.launcher div, .launcher h1 {
 	background-color: var(--color-black);
 	padding: 1rem 2rem;
+	margin: 0;
 	color: var(--color-white);
-	font-size: 3rem;
+	font-size: 1.2rem;
 
 	display: flex;
 	align-items: center;
@@ -342,6 +345,7 @@ main {
 
 .launcher div:nth-child(3) {
 	grid-area: 7 / 2 / 7 / 5;
+	font-size: 2rem;
 	clip-path: polygon(
 		0 0,
 		100% 0,
@@ -398,6 +402,9 @@ canvas.reference {
 }
 
 @media (min-width: 24rem) {
+	.launcher div, .launcher h1 {
+		font-size: 3rem;
+	}
 	.hint {
 		grid-template-rows: 2rem auto;
 		grid-template-columns: min(16rem, 30%) auto;
@@ -437,6 +444,11 @@ canvas.reference {
 	}
 }
 
+
+.off-screen {
+	position: absolute;
+	transform: translate(-1000rem);
+}
 
 
 /* begin: dev stuff */
