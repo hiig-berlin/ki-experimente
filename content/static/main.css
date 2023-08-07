@@ -206,41 +206,97 @@ main {
 }
 
 .experiment .overlay .image-upload {
-	display: none;
+	transform: translate(-1000rem);
+	position: absolute;
 }
 
 .experiment .overlay button,
 .experiment .overlay label {
 	display: block;
 	background-color: var(--color-orange-heavy);
-	border: 1px solid var(--color-orange-light);
+	border: 2px solid var(--color-white);
 	color: var(--color-white);
-	padding: 0.5rem;
-	font-size: 1rem;
-	line-height: 1rem;
-	border-radius: 1rem;
 	cursor: pointer;
+
+	width: 3rem;
+	height: 3rem;
+
+	text-indent: -9999rem;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	background-size: 2rem 2rem;
+	background-position: center center;
 }
+
+.experiment .overlay button:focus,
+.experiment .overlay input[type=file]:focus + label {
+	outline: 3px solid var(--color-orange-heavy);
+}
+
+#experiment-b .capture-reference {
+	background-image: url("/assets/icon-camera.png");
+}
+
+#experiment-b .upload-reference {
+	background-image: url("/assets/icon-upload.png");
+}
+
+#experiment-b .confirm-reference {
+	background-image: url("/assets/icon-confirm.png");
+}
+
+#experiment-b .cancel-reference {
+	background-image: url("/assets/icon-cancel.png");
+}
+
+#experiment-b.reference-preview .upload-reference,
+#experiment-b.reference-preview .capture-reference {
+	display: none;
+}
+
+#experiment-b.default .confirm-reference,
+#experiment-b.default .cancel-reference {
+	display: none;
+}
+
+
 /* end: experiment */
 
 /* begin: launcher */
 .launcher {
 	aspect-ratio: calc(1/1);
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	display: grid;
+	grid-template-rows: repeat(8, 12.5%);
+	grid-template-columns: repeat(8, 12.5%);
 	background-color: var(--color-blue-heavy);
 	background-size: cover;
 	background-position: center center;
 }
 
 .launcher button {
+
+	grid-area: 7 / 6 / 8 / 8 ;
 	font-size: 2rem;
 	padding: 1rem;
 	background-color: var(--color-orange-heavy);
 	border: 1px solid var(--color-orange-light);
 	color: var(--color-white);
 	cursor: pointer;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.launcher button::after {
+	content: "";
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	background-color: var(--color-white);
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+
 }
 
 #experiment-a .launcher {
@@ -249,7 +305,77 @@ main {
 #experiment-b .launcher {
 	background-image: url(/assets/bg-image-2.jpg);
 }
+
+.launcher div {
+	background-color: var(--color-black);
+	padding: 1rem 2rem;
+	color: var(--color-white);
+	font-size: 3rem;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.launcher div:nth-child(1) {
+	grid-area: 2 / 2 / 2 / 8;
+	clip-path: polygon(
+		0 0,
+		calc(100% - 2rem) 0,
+		100% 2rem,
+		100% 100%,
+		0 100%
+	);
+}
+
+.launcher div:nth-child(2) {
+	grid-area: 4 / 4 / 4 / 8;
+	justify-content: flex-end;
+	clip-path: polygon(
+		1rem 0,
+		100% 0,
+		100% 100%,
+		0 100%,
+		0 1rem
+	);
+}
+
+.launcher div:nth-child(3) {
+	grid-area: 7 / 2 / 7 / 5;
+	clip-path: polygon(
+		0 0,
+		100% 0,
+		100% calc(100% - 1rem),
+		calc(100% - 1rem) 100%,
+		0 100%
+	);
+}
+
 /* end: launcher */
+
+.hint {
+	display: grid;
+	grid-template-rows: 4rem auto auto;
+	grid-template-columns: auto;
+	grid-template-areas:
+		"heading"
+		"image"
+		"inner";
+
+	gap: 1rem;
+}
+
+.hint .heading {
+	grid-area: heading;
+}
+
+.hint .image {
+	grid-area: image;
+}
+
+.hint .inner {
+	grid-area: inner;
+}
 
 .debug-output {
 	width: 200px;
@@ -271,6 +397,15 @@ canvas.reference {
 	object-position: center center;
 }
 
+@media (min-width: 24rem) {
+	.hint {
+		grid-template-rows: 2rem auto;
+		grid-template-columns: min(16rem, 30%) auto;
+		grid-template-areas:
+			"image heading"
+			"image inner";
+	}
+}
 
 @media (min-width: 50rem) {
 	.main-grid {
@@ -300,8 +435,8 @@ canvas.reference {
 		background-position: bottom left;
 		background-repeat: no-repeat;
 	}
-
 }
+
 
 
 /* begin: dev stuff */
@@ -347,5 +482,8 @@ canvas.reference {
 
 .ar43 {
 	aspect-ratio: 4 / 3;
+}
+.ar11 {
+	aspect-ratio: 1 / 1;
 }
 /* end: dev stuff */

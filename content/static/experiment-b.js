@@ -4,16 +4,18 @@ import {circleFaceBoundingBox, drawFaceThumbnail, getScaleFactor} from "./lib/gr
 import { loadModels, detectFaces } from "./lib/detection.js"
 
 class ExperimentB extends Experiment {
-	bindEvents() {
-		/*
-		this.container.querySelector(".default-reference").addEventListener("click", () => {
-			this.loadReference("/assets/reference-6.jpg")
-			.then(() => this.detectReferenceFaces())
-		})
-		*/
 
+	constructor(element) {
+		super(element)
+		this.refFaces = []
+		this.newRefFaces = []
+	}
+
+	bindEvents() {
 		this.container.querySelector(".capture-reference").addEventListener("click", () => {
-			this.captureReference()
+
+			this.currentFrameHandler
+			.then(() => this.captureReference())
 			.then(() => this.detectReferenceFaces())
 		})
 		
@@ -21,12 +23,19 @@ class ExperimentB extends Experiment {
 			ev.preventDefault()
 			const file = ev.target.files[0]
 			const url = URL.createObjectURL(file)
-			this.loadReference(url)
+			this.currentFrameHandler
+			.then(() => this.loadReference(url))
 			.then(() => this.detectReferenceFaces())
 		})
 
 		this.container.querySelector(".confirm-reference").addEventListener("click", () => {
 			this.saveReferenceFaces()
+			this.setDefaultMode()
+			this.start()
+		})
+
+		this.container.querySelector(".cancel-reference").addEventListener("click", () => {
+			this.setDefaultMode()
 			this.start()
 		})
 	}
@@ -39,6 +48,7 @@ class ExperimentB extends Experiment {
 		this.container.setAttribute("style", `height:${this.container.clientHeight}px`)
 		this.container.innerHTML = ""
 		this.container.classList.add("experiment")
+		this.container.classList.add("default")
 		const refImg = document.createElement("img")
 		refImg.classList.add("reference")
 
@@ -55,7 +65,9 @@ class ExperimentB extends Experiment {
 				const vAspect = v.videoWidth / v.videoHeight
 				canvas.width = Math.max(v.videoWidth, 1200)
 				canvas.height = Math.floor(canvas.width / vAspect)
+				this.setOffScreenDimensions(canvas.width, canvas.height)
 			})
+
 			this.container.removeAttribute("style")
 			this.container.appendChild(v)
 			this.container.appendChild(canvas)
@@ -71,19 +83,29 @@ class ExperimentB extends Experiment {
 		overlay.classList.add("overlay")
 		overlay.innerHTML = [
 			`<button class="confirm-reference">Confirm</button>`,
+			`<button class="cancel-reference">Cancel</button>`,
 			`<button class="capture-reference">Capture</button>`,
-			//`<button class="default-reference">Default</button>`,
-			`<label for="image-upload">Upload</label>`,
 			`<input type="file" class="image-upload" id="image-upload" />`,
+			`<label class="upload-reference" for="image-upload">Upload</label>`,
 		].join("")
 
 		this.container.appendChild(overlay)
 	}
 
-	frameHandler() {
-		this.drawVideoFrame()
+	setDefaultMode() {
+		this.container.classList.add("default")
+		this.container.classList.remove("reference-preview")
+	}
 
-		return detectFaces(this.canvas, {withRecognition: true})
+	setReferencePreviewMode() {
+		this.container.classList.remove("default")
+		this.container.classList.add("reference-preview")
+	}
+
+	frameHandler() {
+		this.loadVideoFrame()
+
+		return detectFaces(this.offScreenCanvas, {withRecognition: true})
 		.then(faces => {
 			if (this.matcher) {
 				faces.forEach(f => {
@@ -95,7 +117,10 @@ class ExperimentB extends Experiment {
 					}
 				})
 			}
+			this.drawVideoFrame()
 			this.drawDetections(faces)
+			this.drawStoredReferenceFaces()
+			console.log("frame end")
 		})
 	}
 
@@ -108,18 +133,32 @@ class ExperimentB extends Experiment {
 				const offset = 10 * scaleFactor
 				const mx = f.bounds.x - offset
 				const my = f.bounds.y + f.bounds.h + offset
-				drawFaceThumbnail(this.ctx, f, mx, my, 25)
+				drawFaceThumbnail(this.ctx, f.referenceFace, mx, my, 25)
 			}
 		})
 	}
 
+	drawStoredReferenceFaces() {
+		const scaleFactor = getScaleFactor(this.ctx)
+
+		let offset = 0
+		const x = 50 * scaleFactor
+
+		this.refFaces.forEach(f => {
+			const y = (50 + 60 * offset) * scaleFactor
+			drawFaceThumbnail(this.ctx, f, x , y, 25)
+			offset += 1
+		})
+	}
 
 	loadReference(src) {
 		return new Promise(resolve => {
 			this.stop()
+			console.log("stopped")
 			const onload = () => {
 				this.refImg.removeEventListener("load", onload)
 				this.drawReferenceImage()
+				this.setReferencePreviewMode()
 				resolve()
 			}
 			this.refImg.addEventListener("load", onload)
@@ -129,16 +168,19 @@ class ExperimentB extends Experiment {
 
 	captureReference() {
 		this.stop()
+		this.loadVideoFrame()
 		this.drawVideoFrame()
+		this.setReferencePreviewMode()
 
 		return Promise.resolve()
 	}
 
 	saveReferenceFaces() {
-		if (this.refFaces.length === 0) {
-			this.matcher = null
+		if (this.newRefFaces.length === 0) {
 			return
 		}
+
+		this.refFaces = this.refFaces.concat(this.newRefFaces)
 
 		const referenceDescriptors = this.refFaces.map((f,i) => {
 			return new faceapi.LabeledFaceDescriptors(i.toString(), [f.descriptor] )
@@ -176,8 +218,8 @@ class ExperimentB extends Experiment {
 	detectReferenceFaces() {
 		return detectFaces(this.canvas, {withImage: true, withRecognition: true})
 		.then(faces => {
-			this.refFaces = faces
-			this.drawDetections(this.refFaces)
+			this.newRefFaces = faces
+			this.drawDetections(this.newRefFaces)
 			return faces
 		})
 	}

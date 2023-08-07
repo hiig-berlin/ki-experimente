@@ -22,6 +22,7 @@ class ExperimentA extends Experiment {
 				const vAspect = v.videoWidth / v.videoHeight
 				canvas.width = Math.max(v.videoWidth, 1200)
 				canvas.height = Math.floor(canvas.width / vAspect)
+				this.setOffScreenDimensions(canvas.width, canvas.height)
 			})
 			this.container.removeAttribute("style")
 			this.container.appendChild(v)
@@ -33,10 +34,11 @@ class ExperimentA extends Experiment {
 	}
 
 	frameHandler() {
-		this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
+		this.loadVideoFrame()
 
-		return detectFaces(this.canvas, {withImage: true})
+		return detectFaces(this.offScreenCanvas, {withImage: true})
 		.then(faces => {
+			this.drawVideoFrame()
 			this.drawDetections(faces)
 		})
 	}

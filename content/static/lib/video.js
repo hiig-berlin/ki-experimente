@@ -2,6 +2,7 @@ const buildElement = () => {
 	const video = document.createElement("video")
 	video.setAttribute("autoplay", true)
 	video.setAttribute("playsinline", true)
+	video.setAttribute("tabindex", "-1")
 
 	return video
 }

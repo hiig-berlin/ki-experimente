@@ -8,12 +8,26 @@ class Experiment {
 		.then(() => this.buildElements())
 		.then(() => this.start())
 		.then(() => this.bindEvents())
+
+		this.offScreenCanvas = document.createElement("canvas")
+		this.setOffScreenDimensions(640, 480)
+		this.offScreenCtx = this.offScreenCanvas.getContext("2d")
+		this.currentFrameHandler = Promise.resolve()
 	}
 
 	bindEvents(){}
 
 	drawVideoFrame() {
-		this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
+		this.ctx.drawImage(this.offScreenCanvas, 0, 0, this.canvas.width, this.canvas.height)
+	}
+
+	loadVideoFrame() {
+		this.offScreenCtx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height)
+	}
+
+	setOffScreenDimensions(w, h) {
+		this.offScreenCanvas.width = w
+		this.offScreenCanvas.height = h
 	}
 
 	start() {
@@ -29,7 +43,8 @@ class Experiment {
 	loop() {
 		clearTimeout(this.loopTimer)
 		if(this.paused) { return }
-		this.frameHandler().then(() => {
+		this.currentFrameHandler = this.frameHandler()
+		this.currentFrameHandler.then(() => {
 			this.loopTimer = setTimeout(() => this.loop(), this.loopDelay)
 		})
 	}

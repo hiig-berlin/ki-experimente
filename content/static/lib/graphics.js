@@ -54,7 +54,7 @@ export const drawFaceThumbnail = (ctx, face, xc, yc, r) => {
 	ctx.beginPath()
 	ctx.arc(xc, yc, r2, 0, 2 * Math.PI)
 	ctx.clip()
-	drawImageSquare(ctx, face.referenceFace.image, xc - r2, yc - r2 , 2*r2)
+	drawImageSquare(ctx, face.image, xc - r2, yc - r2 , 2*r2)
 	
 	ctx.restore()
 }
