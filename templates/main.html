@@ -13,17 +13,37 @@
 		<label for="menu-toggle" class="menu-trigger">Menu</label>
 		<nav class="main-menu">
 			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/experiment-a/">Experiment A</a></li>
-				<li><a href="/experiment-b/">Experiment B</a></li>
-				<li><a href="/privacy-policy/">Privacy Policy</a></li>
-				<li><a href="/imprint/">Imprint</a></li>
+				<li><a href="/">Startseite</a></li>
+				<li><a href="/experiment-a/">Gesichter finden</a></li>
+				<li><a href="/experiment-b/">Gesichter erkennen</a></li>
+				<li><a href="https://www.hiig.de/datenschutzerklaerung/">Datenschutz</a></li>
+				<li><a href="https://www.hiig.de/impressum/">Impressum</a></li>
 			</ul>
 		</nav>
 	</header>
 	<main>
 		{{content}}
 	</main>
+
+	<footer class="main-footer">
+		<h2>Kooperationspartner</h2>
+		<ul>
+			<li>Alexander von Humboldt Institute for Internet and Society</li>
+			<li>neuland und gestalten</li>
+		</ul>
+	</footer>
+
+	<script type="application/javascript">
+		const menuLinks = Array.from(document.querySelectorAll(".main-menu a"))
+		const urlPath = document.location.pathname
+		
+		menuLinks.forEach(link => {
+			console.log(link.getAttribute("href"), urlPath)
+			if (link.getAttribute("href") == urlPath) {
+				link.classList.add("active")
+			}
+		})
+	</script>
 	
 </body>
 </html>

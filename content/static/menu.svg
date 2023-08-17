@@ -4,13 +4,13 @@
     <rect id="Artboard1" x="0" y="0" width="128" height="128" style="fill:none;"/>
     <g id="Artboard11" serif:id="Artboard1">
         <g transform="matrix(5.09857e-17,-0.83266,1.40213,8.58559e-17,-31.8115,147.974)">
-            <rect x="23.988" y="22.688" width="19.216" height="91.289" style="fill:rgb(8,0,0);"/>
+            <rect x="23.988" y="22.688" width="19.216" height="91.289" style="fill:white;"/>
         </g>
         <g transform="matrix(5.09857e-17,-0.83266,1.40213,8.58559e-17,-31.8115,91.9738)">
-            <rect x="23.988" y="22.688" width="19.216" height="91.289" style="fill:rgb(8,0,0);"/>
+            <rect x="23.988" y="22.688" width="19.216" height="91.289" style="fill:white;"/>
         </g>
         <g transform="matrix(5.09857e-17,-0.83266,1.40213,8.58559e-17,-31.8115,35.9738)">
-            <rect x="23.988" y="22.688" width="19.216" height="91.289" style="fill:rgb(8,0,0);"/>
+            <rect x="23.988" y="22.688" width="19.216" height="91.289" style="fill:white;"/>
         </g>
     </g>
 </svg>
