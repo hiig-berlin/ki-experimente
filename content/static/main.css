@@ -41,6 +41,11 @@ body {
 
 
 /* begin: basic elements */
+
+h1, h2, h3 {
+	font-weight: 500;
+}
+
 img {
 	display: block;
 	width: 100%;
@@ -49,7 +54,7 @@ img {
 
 /* begin: content elements */
 .container {
-	padding: 1rem 2rem;
+	padding: 1rem 3rem;
 }
 .container > *:first-child {
 	margin-top: 0;
@@ -97,7 +102,35 @@ main {
 .main-footer {
 	grid-area: footer;
 	background-color: var(--color-white);
-	padding: 1rem 2rem;
+	padding: 1rem 3rem;
+}
+
+.main-footer .co-ops {
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+	display: grid;
+	grid-template-rows: 1fr;
+	grid-template-columns: 1fr 1fr;
+	gap: 4rem;
+}
+
+.main-footer .co-ops li {
+	aspect-ratio: calc(4/2);
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	text-indent: -9999rem;
+}
+
+.main-footer .hiig {
+	background-image: url(/assets/logo-hiig.png);
+}
+
+.main-footer .nug {
+	background-image: url(/assets/logo-nug.svg);
 }
 /* end: grid structure */
 
@@ -371,7 +404,7 @@ canvas.reference {
 }
 
 .teaser {
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 }
 
 .teaser img {
