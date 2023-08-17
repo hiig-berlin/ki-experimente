@@ -1,6 +1,11 @@
 import video from "./lib/video.js"
 import Experiment from "./lib/experiment.js"
-import {circleFaceBoundingBox, drawFaceThumbnail, getScaleFactor} from "./lib/graphics.js"
+import {
+	circleFaceBoundingBox,
+	drawFaceThumbnail,
+	getScaleFactor,
+	drawNoFaceFoundMessage
+} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
 
 class ExperimentB extends Experiment {
@@ -120,6 +125,9 @@ class ExperimentB extends Experiment {
 			this.drawVideoFrame()
 			this.drawDetections(faces)
 			this.drawStoredReferenceFaces()
+			if (faces.length === 0) {
+				drawNoFaceFoundMessage(this.ctx)
+			}
 			console.log("frame end")
 		})
 	}
@@ -220,6 +228,9 @@ class ExperimentB extends Experiment {
 		.then(faces => {
 			this.newRefFaces = faces
 			this.drawDetections(this.newRefFaces)
+			if (faces.length === 0) {
+				drawNoFaceFoundMessage(this.ctx)
+			}
 			return faces
 		})
 	}

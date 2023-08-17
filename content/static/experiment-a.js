@@ -1,6 +1,6 @@
 import video from "./lib/video.js"
 import Experiment from "./lib/experiment.js"
-import {circleFaceBoundingBox} from "./lib/graphics.js"
+import {circleFaceBoundingBox, drawNoFaceFoundMessage} from "./lib/graphics.js"
 import { loadModels, detectFaces } from "./lib/detection.js"
 
 class ExperimentA extends Experiment {
@@ -40,6 +40,10 @@ class ExperimentA extends Experiment {
 		.then(faces => {
 			this.drawVideoFrame()
 			this.drawDetections(faces)
+
+			if (faces.length === 0) {
+				drawNoFaceFoundMessage(this.ctx)
+			}
 		})
 	}
 

@@ -73,3 +73,21 @@ const drawImageSquare = (ctx, image, x, y, size) => {
 
 	ctx.drawImage(image, da, db, s, s, x, y, size, size)
 }
+
+export const drawNoFaceFoundMessage = (ctx) => {
+	const scaleFactor = getScaleFactor(ctx)
+
+	const x = ctx.canvas.width / 2
+	const y = ctx.canvas.height - 25 * scaleFactor
+
+	const message = "Keine Gesichter gefunden"
+
+	ctx.save()
+	ctx.strokeStyle = "#000"
+	ctx.fillStyle = "#fff"
+	ctx.textAlign = "center"
+	ctx.font = ` bold ${24*scaleFactor}px sans-serif`
+	ctx.fillText(message, x, y)
+	ctx.strokeText(message, x, y)
+ ctx.restore()
+}
