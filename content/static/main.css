@@ -54,6 +54,10 @@ h1, h2, h3 {
 	font-weight: 500;
 }
 
+h3 {
+	font-size: 1.2rem;
+}
+
 img {
 	display: block;
 	width: 100%;
@@ -340,7 +344,7 @@ main {
 }
 
 .launcher .info {
-	padding: 2rem;
+	padding: 2rem 3rem;
 	display: grid
 }
 
@@ -424,6 +428,7 @@ main {
 
 .hint .heading {
 	grid-area: heading;
+	margin: 0;
 }
 
 .hint .image {
@@ -432,6 +437,14 @@ main {
 
 .hint .inner {
 	grid-area: inner;
+}
+
+.hint .inner :first-child {
+	margin-top: 0;
+}
+
+.hint .inner :last-child {
+	margin-bottom: 0;
 }
 
 .debug-output {
