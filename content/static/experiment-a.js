@@ -9,9 +9,6 @@ class ExperimentA extends Experiment {
 	}
 
 	buildElements() {
-		this.container.setAttribute("style", `height:${this.container.clientHeight}px`)
-		this.container.innerHTML = ""
-		this.container.classList.add("experiment")
 		return video()
 		.then(v => {
 			const canvas = document.createElement("canvas")
@@ -24,7 +21,6 @@ class ExperimentA extends Experiment {
 				canvas.height = Math.floor(canvas.width / vAspect)
 				this.setOffScreenDimensions(canvas.width, canvas.height)
 			})
-			this.container.removeAttribute("style")
 			this.container.appendChild(v)
 			this.container.appendChild(canvas)
 			this.canvas = canvas

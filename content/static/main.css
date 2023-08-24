@@ -232,6 +232,42 @@ main {
 	position: relative;
 }
 
+@keyframes loading-spinner {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.experiment .loader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	z-index: 50;
+	background-color: var(--color-blue-heavy);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.experiment .loader::after {
+	content: "";
+	width: 64px;
+	height: 64px;
+
+	background-image: url(/static/loading-spinner.svg);
+	background-size: cover;
+
+	animation: 1s linear infinite loading-spinner;
+}
+
 .experiment video,
 .experiment .live-canvas {
 	width: 100%;

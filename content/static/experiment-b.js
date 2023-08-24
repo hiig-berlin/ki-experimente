@@ -50,9 +50,6 @@ class ExperimentB extends Experiment {
 	}
 
 	buildElements() {
-		this.container.setAttribute("style", `height:${this.container.clientHeight}px`)
-		this.container.innerHTML = ""
-		this.container.classList.add("experiment")
 		this.container.classList.add("default")
 		const refImg = document.createElement("img")
 		refImg.classList.add("reference")
@@ -73,7 +70,6 @@ class ExperimentB extends Experiment {
 				this.setOffScreenDimensions(canvas.width, canvas.height)
 			})
 
-			this.container.removeAttribute("style")
 			this.container.appendChild(v)
 			this.container.appendChild(canvas)
 			this.canvas = canvas
