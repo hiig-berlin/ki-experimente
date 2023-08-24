@@ -62,6 +62,7 @@ img {
 	display: block;
 	width: 100%;
 }
+
 /* end: basic elements */
 
 /* begin: content elements */
@@ -128,7 +129,8 @@ main {
 	gap: 4rem;
 }
 
-.main-footer .co-ops li {
+.main-footer .co-ops li a {
+	display: block;
 	aspect-ratio: calc(4/2);
 	background-size: contain;
 	background-position: center center;
