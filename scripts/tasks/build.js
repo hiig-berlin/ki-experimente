@@ -2,19 +2,19 @@ import { mkdirSync, cpSync } from "fs"
 import generatePage from "./generate-page.js"
 
 const createDirs = () => {
-	mkdirSync("./output", {recursive: true} )
+	mkdirSync("./site", {recursive: true} )
 }
 
 const copyStaticFiles = () => {
-	cpSync("./content/static", "./output/static", {recursive: true})
-	cpSync("./content/assets", "./output/assets", {recursive: true})
+	cpSync("./content/static", "./site/static", {recursive: true})
+	cpSync("./content/assets", "./site/assets", {recursive: true})
 }
 
 const generatePages = () => {
 	[
-		["./content/index.html", "./templates/main.html", "./output/"],
-		["./content/experiment-a.html", "./templates/main.html", "./output/experiment-a/"],
-		["./content/experiment-b.html", "./templates/main.html", "./output/experiment-b/"],
+		["./content/index.html", "./templates/main.html", "./site/"],
+		["./content/experiment-a.html", "./templates/main.html", "./site/experiment-a/"],
+		["./content/experiment-b.html", "./templates/main.html", "./site/experiment-b/"],
 	].map(item => generatePage(item[0], item[1], item[2]))
 }
 

@@ -17,7 +17,7 @@ jobs:
         run: npm run build
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r site.zip output
+          args: zip -qq -r site.zip site
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
