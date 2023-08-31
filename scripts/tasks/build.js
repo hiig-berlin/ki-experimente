@@ -13,8 +13,8 @@ const copyStaticFiles = () => {
 const generatePages = () => {
 	[
 		["./content/index.html", "./templates/main.html", "./site/"],
-		["./content/experiment-a.html", "./templates/main.html", "./site/experiment-a/"],
-		["./content/experiment-b.html", "./templates/main.html", "./site/experiment-b/"],
+		["./content/gesichter-finden.html", "./templates/main.html", "./site/gesichter-finden/"],
+		["./content/gesichter-erkennen.html", "./templates/main.html", "./site/gesichter-erkennen/"],
 	].map(item => generatePage(item[0], item[1], item[2]))
 }
 
