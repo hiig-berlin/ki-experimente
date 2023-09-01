@@ -6,7 +6,8 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "node scripts/build.js",
-		"watch": "node scripts/watch.js"
+		"watch": "node scripts/watch.js",
+		"dev": "node scripts/watch.js & python3 -m http.server -d site/"
 	},
 	"author": "",
 	"license": "ISC",
