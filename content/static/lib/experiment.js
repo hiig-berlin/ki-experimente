@@ -12,6 +12,9 @@ class Experiment {
 		.then(() => this.bindEvents())
 		.then(() => this.clearLauncher())
 		.then(() => this.hideLoader())
+		.catch(err => {
+			this.showError(err.message)
+		})
 
 		this.offScreenCanvas = document.createElement("canvas")
 		this.setOffScreenDimensions(640, 480)
@@ -27,10 +30,22 @@ class Experiment {
 		}
 	}
 
-	showLoader() {
+	freezeCurrentDimensions() {
 		const tempHeight = this.container.clientHeight
 		const tempWidth = this.container.clientWidth
 		this.container.setAttribute("style", `height: ${tempHeight}px; width:${tempWidth}px; overflow:hidden;`)
+	}
+
+	unfreezeCurrentDimensions() {
+		this.container.removeAttribute("style")
+	}
+
+	cameraError() {
+		return new Error("Kamera konnte nicht aktiviert werden.<br><br>Bitte lade die Seite neu und erlaube den Kamerazugriff wenn dein Browser dich dazu auffordert.")
+	}
+
+	showLoader() {
+		this.freezeCurrentDimensions()
 		if (this.container.querySelector(".loader")) { return }
 
 		const loader = document.createElement("div")
@@ -39,11 +54,24 @@ class Experiment {
 	}
 
 	hideLoader() {
-		this.container.removeAttribute("style")
+		this.unfreezeCurrentDimensions()
 		const loader = this.container.querySelector(".loader")
 		if (loader) {
 			this.container.removeChild(loader)
 		}
+	}
+
+	showError(message) {
+		this.freezeCurrentDimensions()
+
+		let errorElement = this.container.querySelector(".error")
+		if (!errorElement) {
+			errorElement = document.createElement("div")
+			errorElement.classList.add("error")
+			this.container.appendChild(errorElement)
+		}
+
+		errorElement.innerHTML = `<h2>Fehler</h2><div class="message">${message}</div>`
 	}
 
 	bindEvents(){}

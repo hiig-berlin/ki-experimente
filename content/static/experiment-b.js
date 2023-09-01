@@ -77,6 +77,9 @@ class ExperimentB extends Experiment {
 			this.video = v
 			this.buildControls()
 		})
+		.catch(_ => {
+			throw this.cameraError()
+		})
 	}
 
 	buildControls() {

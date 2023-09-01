@@ -27,6 +27,9 @@ class ExperimentA extends Experiment {
 			this.ctx = canvas.getContext("2d")
 			this.video = v
 		})
+		.catch(_ => {
+			throw this.cameraError()
+		})
 	}
 
 	frameHandler() {

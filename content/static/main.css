@@ -242,19 +242,32 @@ main {
 	}
 }
 
-.experiment .loader {
+.experiment .loader, .experiment .error {
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
-
-	z-index: 50;
 	background-color: var(--color-blue-heavy);
-
+	color: var(--color-white);
 	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 	align-items: center;
 	justify-content: center;
+}
+
+.experiment .error {
+	z-index: 60;
+}
+
+.experiment .error * {
+	max-width: 20rem;
+	text-align: center;
+}
+
+.experiment .loader {
+	z-index: 50;
 }
 
 .experiment .loader::after {
@@ -361,7 +374,6 @@ main {
 #experiment-b.default .cancel-reference {
 	display: none;
 }
-
 
 /* end: experiment */
 
