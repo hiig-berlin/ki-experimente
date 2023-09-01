@@ -16,7 +16,7 @@ Das Projekt möchte grundlegendes Wissen über Künstliche Intelligenz am Beispi
 
 ## Automatischer Build
 
-Die Seite wird bei jedem Git-Tag der das Format `"v*"` hat (also z.B. `"v1.0"`) automatisch durch einen Github-Workflow generiert.
+Die Seite wird bei jedem Commit im `main` branch automatisch durch einen Github-Workflow generiert.
 
 Der Fortschritt kann unter <https://github.com/hiig-berlin/ki-experimente/actions> eingesehen werden. Der Prozess dauert normalerweise nur ein paar Sekunden.
 
@@ -42,3 +42,5 @@ Im Hauptverzeichnis de Projekts:
 Danach befindet sich die Website im `output` Verzeichnis und kann von dort auf einen Webserver hochgeladen werden.
 
 Um die Seite lokal zu testen wird ein Webserver benötigt der SSL-Verschlüsselung anbietet sowie ein SSL-Zertifikat.
+
+Mit `npm run watch` wird ein Script gestartet das die Seite bei jeder Änderung automatisch neu generiert, damit das beim entwickeln nicht jedes Mal manuell passieren muss.
