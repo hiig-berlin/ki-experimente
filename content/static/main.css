@@ -735,7 +735,7 @@ canvas.reference {
   .hint {
     display: grid;
     grid-template-rows: 1rem auto;
-    grid-template-columns: min(16rem, 30%) auto;
+    grid-template-columns: min(16rem, 40%) auto;
     grid-template-areas:
       "heading heading"
       "image inner";
