@@ -8,14 +8,17 @@ const generatePage = (pageFile, templateFile, outputPath) => {
 	const page = readFileSync(pageFile)
 	const template = readFileSync(templateFile, {encoding: "utf-8"})
 	const footer = readFileSync("./templates/footer.html", {encoding: "utf-8"})
+	const menu = readFileSync("./templates/menu.html", {encoding: "utf-8"})
 
 	let fullPage = template.replace("{{content}}", page)
+	fullPage = fullPage.replace("{{footer}}", footer)
+	fullPage = fullPage.replace("{{menu}}", menu)
 
-	if (pagesWithFooter.indexOf(pageFile) !== -1) {
-		fullPage = fullPage.replace("{{footer}}", footer)
-	} else {
-		fullPage = fullPage.replace("{{footer}}", "")
-	}
+	// if (pagesWithFooter.indexOf(pageFile) !== -1) {
+	// 	fullPage = fullPage.replace("{{footer}}", footer)
+	// } else {
+	// 	fullPage = fullPage.replace("{{footer}}", "")
+	// }
 
 	mkdirSync(outputPath, { recursive: true })
 
