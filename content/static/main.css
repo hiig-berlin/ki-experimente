@@ -721,6 +721,10 @@ canvas.reference {
 		flex: 400px 1 0;
   }
 
+  main .container.start{
+    justify-content: center;
+  }
+
   .experiment {
     background: var(--color-black);
   }
