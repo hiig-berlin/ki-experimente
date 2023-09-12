@@ -370,18 +370,18 @@ main .container section {
 }
 
 .teaser .A {
-  background: url("/assets/bg-image-3.jpg");
+  background-image: url("/assets/bg-image-6.jpg");
 }
 
 .teaser .B {
-  background: url("/assets/bg-image-1.jpg");
+  background-image: url("/assets/bg-image-5.jpg");
 }
 
 #experiment-a .launcher {
-  background-image: url(/assets/bg-image-3.jpg);
+  background-image: url(/assets/bg-image-6.jpg);
 }
 #experiment-b .launcher {
-  background-image: url(/assets/bg-image-1.jpg);
+  background-image: url(/assets/bg-image-5.jpg);
 }
 .experiment.about .launcher {
   background-image: url(/assets/bg-image-4.jpg);
