@@ -73,8 +73,9 @@ h1 {
 
 h2,
 h3 {
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 0;
+  font-weight: bold;
 }
 
 img {
@@ -86,13 +87,14 @@ a.bnt,
 button {
   text-decoration: none;
   border: 3px solid var(--color-white);
-  padding: 1rem 2rem;
+  padding: 1.3rem 2.0rem;
   text-transform: uppercase;
   font-weight: bold;
   letter-spacing: 0.02em;
   background: #0005;
   background-blend-mode: multiply;
   color: var(--color-white);
+  font-size: 1rem;
 }
 
 /* end: basic elements */
@@ -341,10 +343,16 @@ main .container section {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
+  position: relative;
 }
 
-.main-menu a.active {
-  color: #fff5;
+.main-menu a.active:before {
+  content: "\25BE";
+  position: absolute;
+  color: var(--color-teal);
+  top: calc(0px - 2rem - 0.55em);
+  left: 50%;
+  font-size: 3rem;
 }
 /* end: header and menu */
 
