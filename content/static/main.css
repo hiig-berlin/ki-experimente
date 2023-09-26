@@ -628,8 +628,9 @@ canvas.reference {
 }
 
 .video-embed iframe {
-  aspect-ratio: calc(4 / 3);
+  aspect-ratio: calc(16 / 9);
   width: 100%;
+  height: auto;
 }
 
 @media (min-width: 32rem) {
